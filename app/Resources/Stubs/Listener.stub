@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Listeners;
+
+use Myerscode\Acorn\Foundation\Events\CommandAfterEvent;
+use Myerscode\Acorn\Framework\Console\Output;
+use Myerscode\Acorn\Framework\Events\Listener;
+use Myerscode\Utilities\Strings\Utility as Text;
+
+class <{ $StubListener }> extends Listener
+{
+    /**
+     * @var string[]|string
+     */
+    protected $listensFor = <{ $ListensFor }>;
+
+    public function __invoke(): void
+    {
+        //
+    }
+}
