@@ -1,0 +1,43 @@
+{
+    "name": "myerscode/acorn-cli",
+    "description": "A CLI tool for working with Acorn apps",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Fred Myerscough",
+            "email": "oniice@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "~/Code/acorn-framework"
+        }
+    ],
+    "bin": [
+        "acorn"
+    ],
+    "require": {
+        "php": "^8.1",
+        "myerscode/acorn-framework": "dev-main",
+        "myerscode/templex": "^1.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

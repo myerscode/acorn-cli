@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+define('ACORN_START', microtime(true));
+
+require __DIR__.'/vendor/autoload.php';
+
+$application = new \Myerscode\Acorn\Kernel( $_ENV['APP_BASE_PATH'] ?? __DIR__ . '/app' );
+
+exit($application->run());
