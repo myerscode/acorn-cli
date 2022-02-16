@@ -7,15 +7,9 @@ use Myerscode\Acorn\Framework\Console\Command;
 class <{ $StubCommand }> extends Command
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setName("<{ $CommandName }>")
-            ->setDescription("<{ $CommandDescription }>");
-    }
+    protected string $signature = '<{ $CommandName }>';
+
+    protected string $description = '<{ $CommandDescription }>';
 
     public function handle(): void
     {
