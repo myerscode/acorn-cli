@@ -8,22 +8,19 @@
             "email": "oniice@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "~/Code/acorn-framework"
-        }
-    ],
     "bin": [
         "acorn"
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": "^8.1",
         "myerscode/acorn-framework": "dev-main",
-        "myerscode/templex": "^1.0"
+        "myerscode/templex": "^1.0",
+        "symfony/process": "^6.0"
     },
     "require-dev": {
-        "symfony/var-dumper": "^5.3"
+        "myerscode/acorn-testing": "dev-main"
     },
     "autoload": {
         "psr-4": {
@@ -39,5 +36,16 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit --testdox --no-coverage --colors=always",
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --testdox --colors=always",
+        "phpcs": "vendor/bin/phpcs src tests --standard=PSR12"
+    },
+    "extra": {
+        "acorn": {
+            "commands": true,
+            "listeners": true
+        }
     }
 }
