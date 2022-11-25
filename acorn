@@ -5,7 +5,14 @@ use Myerscode\Acorn\Kernel;
 
 define('ACORN_START', microtime(true));
 
-require __DIR__.'/vendor/autoload.php';
+if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    require __DIR__.'/vendor/autoload.php';
+} elseif (file_exists(__DIR__.'/../../autoload.php')) {
+    // might be installed globally
+    require __DIR__.'/../../autoload.php';
+} else {
+    throw new Exception('Unable to locale vendor autoload.php');
+}
 
 $application = new Kernel( $_ENV['APP_BASE_PATH'] ?? __DIR__ . '/app' );
 
