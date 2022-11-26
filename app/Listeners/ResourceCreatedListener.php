@@ -9,7 +9,7 @@ class ResourceCreatedListener extends Listener
     /**
      * @var string[]|string
      */
-    protected $listensFor = "";
+    protected array|string $listensFor = "";
 
     public function __invoke(): void
     {
