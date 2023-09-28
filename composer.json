@@ -9,7 +9,7 @@
         }
     ],
     "bin": [
-        "acorn"
+        "acorn-cli"
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
