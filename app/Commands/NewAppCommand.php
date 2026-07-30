@@ -19,15 +19,15 @@ class NewAppCommand extends Command
                                        {--from=dev-main : Which tagged version to create from}
                                        {--force : Force the installation by removing existing directory}';
 
-    public function handle(): void
+    public function handle(): int
     {
         $name = is_string($this->argument('project')) ? $this->argument('project') : '';
         $location = $this->argument('location');
-        $directory = is_string($location) ? $location : (string) getcwd() . '/' . $name;
+        $directory = is_string($location) ? $location : getcwd() . '/' . $name;
 
         $this->info('Creating project in ' . $directory);
 
-        $version = (string) ($this->option('from') ?? 'dev-main');
+        $version = $this->option('from') ?? 'dev-main';
 
         $commands = array_filter([
             ($directory !== '.' && $this->option('force')) ? $this->forceCommand($directory) : '',
@@ -41,6 +41,8 @@ class NewAppCommand extends Command
         $process->run(function ($type, string $line) use ($output): void {
             $output->writeln($line);
         });
+
+        return 0;
     }
 
     protected function forceCommand(string $directory): string

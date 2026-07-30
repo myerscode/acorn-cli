@@ -9,14 +9,14 @@ use Override;
 
 class ResourceCreatedListener extends Listener
 {
-    /**
-     * @var string[]|string
-     */
-    #[Override]
-    protected array|string $listensFor = '';
-
     public function __invoke(): void
     {
         //
+    }
+
+    #[Override]
+    public function listensFor(): array|string
+    {
+        return '';
     }
 }

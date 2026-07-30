@@ -33,7 +33,7 @@ class MakeEventCommand extends GeneratorCommand
 
         return [
             'StubEvent' => (string) TextService::make($name)->toPascalCase()->append('Event')->value(),
-            'EventName' => (string) ($this->option('event') ?? ''),
+            'EventName' => $this->option('event') ?? '',
         ];
     }
 }

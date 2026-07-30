@@ -28,7 +28,7 @@ class MakeListenerCommand extends GeneratorCommand
     /** @return array<string, string> */
     protected function placeholderMap(): array
     {
-        $events = (string) ($this->option('events') ?? '""');
+        $events = $this->option('events') ?? '""';
         $name = is_string($this->argument('name')) ? $this->argument('name') : '';
 
         if (!TextService::make($events)->endsWith(['::class', '""'])) {

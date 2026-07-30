@@ -33,8 +33,8 @@ class MakeCommandCommand extends GeneratorCommand
 
         return [
             'StubCommand' => (string) TextService::make(strtolower($name) . 'Command')->toPascalCase()->value(),
-            'CommandName' => (string) ($this->option('command') ?? strtolower($name)),
-            'CommandDescription' => (string) ($this->option('description') ?? ''),
+            'CommandName' => $this->option('command') ?? strtolower($name),
+            'CommandDescription' => $this->option('description') ?? '',
         ];
     }
 }

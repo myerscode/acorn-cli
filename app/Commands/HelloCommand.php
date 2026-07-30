@@ -15,8 +15,10 @@ class HelloCommand extends Command
     #[Override]
     protected string $signature = 'hello';
 
-    public function handle(): void
+    public function handle(): int
     {
         $this->output->text('Hello ' . get_current_user());
+
+        return 0;
     }
 }

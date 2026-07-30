@@ -23,7 +23,7 @@ abstract class GeneratorCommand extends Command
     /** @return array<string, string> */
     abstract protected function placeholderMap(): array;
 
-    public function handle(): void
+    public function handle(): int
     {
         $resource = strtolower($this->resourceType);
 
@@ -43,6 +43,8 @@ abstract class GeneratorCommand extends Command
         } else {
             $this->error($utility . ' already exists.');
         }
+
+        return 0;
     }
 
     public function stubDirectory(): string
