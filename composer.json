@@ -17,7 +17,7 @@
     "require": {
         "php": "^8.5",
         "myerscode/acorn-framework": "dev-main",
-        "myerscode/templex": "dev-main",
+        "myerscode/templex": "^2026.0",
         "symfony/process": "^8.0"
     },
     "require-dev": {
