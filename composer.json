@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^8.1",
+        "php": "^8.5",
         "myerscode/acorn-framework": "dev-main",
         "myerscode/templex": "^1.0",
         "symfony/process": "^6.0"
