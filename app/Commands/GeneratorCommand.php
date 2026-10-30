@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Commands;
 
 use Myerscode\Acorn\Framework\Console\Command;
@@ -11,49 +13,49 @@ use function Myerscode\Acorn\Foundation\config;
 
 abstract class GeneratorCommand extends Command
 {
-    protected string $resourceType;
+    /** @var array<string, mixed> */
+    protected array $commandArguments = [];
 
     protected string $configLocationKey;
 
-    protected array $commandArguments = [];
+    protected string $resourceType;
 
-    public function handle(): void
+    /** @return array<string, string> */
+    abstract protected function placeholderMap(): array;
+
+    public function handle(): int
     {
         $resource = strtolower($this->resourceType);
 
-        $className = TextService::make($this->argument('name'))
+        $utility = TextService::make(is_string($this->argument('name')) ? $this->argument('name') : '')
             ->toPascalCase()
-            ->append(TextService::make($resource)->toPascalCase());
+            ->append((string) TextService::make($resource)->toPascalCase());
 
-        $fileName = $className->append('.php')->value();
+        $fileName = $utility->append('.php')->value();
 
-        $newCommandFile = FileService::make($this->storeIn().'/'.$fileName);
+        $newCommandFile = FileService::make($this->storeIn() . '/' . $fileName);
 
-        if ($this->hasOption('force') || !$newCommandFile->exists() && !$this->hasOption('force')) {
-            $placeholders = $this->placeHolderMap();
+        if ($this->hasOption('force') || !$newCommandFile->exists()) {
+            $placeholders = $this->placeholderMap();
             $templex = new Templex($this->stubDirectory());
             $newCommandFile->touch()->setContent($templex->render($resource, $placeholders));
-            $this->info("Created $className");
+            $this->info('Created ' . $utility);
         } else {
-            $this->error("$className already exists.");
+            $this->error($utility . ' already exists.');
         }
+
+        return 0;
     }
 
-    /**
-     * @return string
-     */
     public function stubDirectory(): string
     {
         $basePath = config('base');
 
-        return $basePath.'/Resources/Stubs/';
+        return $basePath . '/Resources/Stubs/';
     }
-
-    abstract protected function placeholderMap(): array;
 
     protected function storeIn(): string
     {
-        return config($this->configLocationKey);
+        return (string) config($this->configLocationKey);
     }
-
 }

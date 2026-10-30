@@ -1,33 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Commands;
 
 use Myerscode\Utilities\Strings\Utility as TextService;
+use Override;
 
 class MakeListenerCommand extends GeneratorCommand
 {
-    protected string $signature = 'make:listener 
+    #[Override]
+    protected string $configLocationKey = 'executing.dir.listeners';
+
+    #[Override]
+    protected string $description = 'Create a new listener.';
+
+    #[Override]
+    protected string $resourceType = 'listener';
+
+    #[Override]
+    protected string $signature = 'make:listener
                                    {name : The name of the listener}
                                    {--e|events= : The name of the events to listen for}
                                    {--f|force : Overwrite existing file when creating a new one}
                                    ';
 
-    protected string $description = 'Create a new listener.';
-
-    protected string $resourceType = 'listener';
-
-    protected string $configLocationKey = 'executing.dir.listeners';
-
-    protected function placeHolderMap(): array
+    /** @return array<string, string> */
+    protected function placeholderMap(): array
     {
-        $events = $this->option('events', '""');
+        $events = $this->option('events') ?? '""';
+        $name = is_string($this->argument('name')) ? $this->argument('name') : '';
 
         if (!TextService::make($events)->endsWith(['::class', '""'])) {
-            $events = '"'.$events.'"';
+            $events = '"' . $events . '"';
         }
 
         return [
-            'StubListener' => TextService::make($this->argument('name'))->toPascalCase()->append('Listener')->value(),
+            'StubListener' => (string) TextService::make($name)->toPascalCase()->append('Listener')->value(),
             'ListensFor' => $events,
         ];
     }

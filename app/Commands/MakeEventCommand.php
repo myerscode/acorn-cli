@@ -1,30 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Commands;
 
 use Myerscode\Utilities\Strings\Utility as TextService;
-use Symfony\Component\Console\Input\InputOption;
+use Override;
 
 class MakeEventCommand extends GeneratorCommand
 {
-    protected string $signature = 'make:event 
+    #[Override]
+    protected string $configLocationKey = 'executing.dir.events';
+
+    #[Override]
+    protected string $description = 'Create a new event.';
+
+    #[Override]
+    protected string $resourceType = 'event';
+
+    #[Override]
+    protected string $signature = 'make:event
                                    {name : The name of the event}
                                    {--e|event= : The name of the event}
                                    {--d|description= : The description of the command}
                                    {--f|force : Overwrite existing file when creating a new one}
                                    ';
 
-    protected string $description = 'Create a new event.';
-
-    protected string $resourceType = 'event';
-
-    protected string $configLocationKey = 'executing.dir.events';
-
-    protected function placeHolderMap(): array
+    /** @return array<string, string> */
+    protected function placeholderMap(): array
     {
+        $name = is_string($this->argument('name')) ? $this->argument('name') : '';
+
         return [
-            'StubEvent' => TextService::make($this->argument('name'))->toPascalCase()->append('Event')->value(),
-            'EventName' => $this->option('event', ''),
+            'StubEvent' => (string) TextService::make($name)->toPascalCase()->append('Event')->value(),
+            'EventName' => $this->option('event') ?? '',
         ];
     }
 }

@@ -1,27 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Commands;
 
 use Myerscode\Utilities\Strings\Utility as TextService;
-use Symfony\Component\Console\Input\InputOption;
+use Override;
 
 class MakeProviderCommand extends GeneratorCommand
 {
-    protected string $signature = 'make:provider 
+    #[Override]
+    protected string $configLocationKey = 'executing.dir.providers';
+
+    #[Override]
+    protected string $description = 'Create a new service provider.';
+
+    #[Override]
+    protected string $resourceType = 'provider';
+
+    #[Override]
+    protected string $signature = 'make:provider
                                    {name : The name of the service provider}
                                    {--f|force : Overwrite existing file when creating a new one}
                                    ';
 
-    protected string $description = 'Create a new event.';
-
-    protected string $resourceType = 'provider';
-
-    protected string $configLocationKey = 'executing.dir.providers';
-
-    protected function placeHolderMap(): array
+    /** @return array<string, string> */
+    protected function placeholderMap(): array
     {
+        $name = is_string($this->argument('name')) ? $this->argument('name') : '';
+
         return [
-            'StubProvider' => TextService::make($this->argument('name'))->toPascalCase()->append('Provider')->value(),
+            'StubProvider' => (string) TextService::make($name)->toPascalCase()->append('Provider')->value(),
         ];
     }
 }
