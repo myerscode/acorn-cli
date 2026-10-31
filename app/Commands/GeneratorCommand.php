@@ -35,14 +35,19 @@ abstract class GeneratorCommand extends Command
 
         $newCommandFile = FileService::make($this->storeIn() . '/' . $fileName);
 
-        if ($this->hasOption('force') || !$newCommandFile->exists()) {
-            $placeholders = $this->placeholderMap();
-            $templex = new Templex($this->stubDirectory());
-            $newCommandFile->touch()->setContent($templex->render($resource, $placeholders));
-            $this->info('Created ' . $utility);
-        } else {
+        // flag() reports whether --force was actually passed; hasOption() is
+        // true for any *defined* option, so using it here overwrote every
+        // existing file unconditionally.
+        if (!$this->flag('force') && $newCommandFile->exists()) {
             $this->error($utility . ' already exists.');
+
+            return 1;
         }
+
+        $placeholders = $this->placeholderMap();
+        $templex = new Templex($this->stubDirectory());
+        $newCommandFile->touch()->setContent($templex->render($resource, $placeholders));
+        $this->info('Created ' . $utility);
 
         return 0;
     }
