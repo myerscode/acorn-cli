@@ -17,6 +17,23 @@ final class NewAppCommandTest extends BaseTestCase
 {
     use InteractsWithCommands;
 
+    public function testBuildsComposerArgvWithoutShell(): void
+    {
+        $command = new \App\Commands\NewAppCommand();
+
+        $argv = $command->createProjectCommand('/tmp/rupert-app', 'dev-main');
+
+        // Array argv, not a shell string — no interpolation, exact elements.
+        $this->assertSame([
+            'composer',
+            'create-project',
+            'myerscode/acorn:dev-main',
+            '/tmp/rupert-app',
+            '--prefer-dist',
+            '--remove-vcs',
+        ], $argv);
+    }
+
     public function testRefusesToOverwriteAnExistingDirectoryWithoutForce(): void
     {
         $existing = sys_get_temp_dir() . '/acorn_new_existing_' . uniqid();

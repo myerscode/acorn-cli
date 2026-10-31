@@ -12,6 +12,9 @@ class HelloCommand extends Command
     #[Override]
     protected string $description = 'Say hello';
 
+    // Example command, kept out of the published command list for 1.0.
+    protected bool $hide = true;
+
     #[Override]
     protected string $signature = 'hello';
 

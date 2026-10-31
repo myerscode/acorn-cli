@@ -20,6 +20,28 @@ class NewAppCommand extends Command
                                        {--from=dev-main : Which tagged version to create from}
                                        {--force : Force the installation by removing existing directory}';
 
+    /**
+     * Build the composer create-project argv.
+     *
+     * Array argv (not a shell string): arguments are passed directly to the
+     * process with no shell interpretation, so a project name or version
+     * containing shell metacharacters cannot inject commands. Exposed so tests
+     * can assert the exact argv without running composer.
+     *
+     * @return list<string>
+     */
+    public function createProjectCommand(string $directory, string $version): array
+    {
+        return [
+            'composer',
+            'create-project',
+            'myerscode/acorn:' . $version,
+            $directory,
+            '--prefer-dist',
+            '--remove-vcs',
+        ];
+    }
+
     public function handle(): int
     {
         $name = is_string($this->argument('project')) ? $this->argument('project') : '';
@@ -61,17 +83,7 @@ class NewAppCommand extends Command
 
         $this->info('Creating project in ' . $directory);
 
-        // Array argv: arguments are passed directly to the process with no
-        // shell interpretation, so a project name or version containing shell
-        // metacharacters cannot inject commands.
-        $process = new Process([
-            'composer',
-            'create-project',
-            'myerscode/acorn:' . $version,
-            $directory,
-            '--prefer-dist',
-            '--remove-vcs',
-        ], null, null, null, null);
+        $process = $this->makeProcess($this->createProjectCommand($directory, $version));
 
         $output = $this->output;
         $process->run(function ($type, string $line) use ($output): void {
@@ -79,6 +91,17 @@ class NewAppCommand extends Command
         });
 
         return $process->getExitCode() ?? 1;
+    }
+
+    /**
+     * Create the process for the given argv. Overridable so tests can inject a
+     * fake without launching composer.
+     *
+     * @param list<string> $command
+     */
+    protected function makeProcess(array $command): Process
+    {
+        return new Process($command, null, null, null, null);
     }
 
     /**

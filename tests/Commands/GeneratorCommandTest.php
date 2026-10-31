@@ -107,7 +107,7 @@ final class GeneratorCommandTest extends BaseTestCase
         $this->call('make:listener', ['name' => 'arthur']);
 
         $content = (string) file_get_contents($this->outputDir . '/ArthurListener.php');
-        $this->assertStringContainsString('$listensFor = [];', $content);
+        $this->assertStringContainsString('return [];', $content);
     }
 
     public function testNameIsSanitisedAndCannotTraverse(): void
@@ -131,12 +131,12 @@ final class GeneratorCommandTest extends BaseTestCase
     }
 
     /**
-     * Isolate the PHP that was substituted into the $listensFor assignment so
-     * an injection attempt can be asserted against as rendered code.
+     * Isolate the PHP that was substituted into the listensFor() return so an
+     * injection attempt can be asserted against as rendered code.
      */
     private function phpAfterListensFor(string $content): string
     {
-        if (preg_match('/\$listensFor\s*=\s*(.*);/', $content, $m) === 1) {
+        if (preg_match('/return\s+(.*);/', $content, $m) === 1) {
             return $m[1];
         }
 

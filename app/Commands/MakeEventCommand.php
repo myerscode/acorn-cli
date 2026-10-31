@@ -20,9 +20,8 @@ class MakeEventCommand extends GeneratorCommand
 
     #[Override]
     protected string $signature = 'make:event
-                                   {name : The name of the event}
-                                   {--e|event= : The name of the event}
-                                   {--d|description= : The description of the command}
+                                   {name : The class name of the event}
+                                   {--a|alias= : Optional dispatch name/alias (defaults to the class name)}
                                    {--f|force : Overwrite existing file when creating a new one}
                                    ';
 
@@ -33,7 +32,7 @@ class MakeEventCommand extends GeneratorCommand
 
         return [
             'StubEvent' => (string) TextService::make($name)->toPascalCase()->append('Event')->value(),
-            'EventName' => $this->option('event') ?? '',
+            'EventName' => $this->option('alias') ?? '',
         ];
     }
 }
