@@ -9,11 +9,28 @@
 
 > A CLI tool for working with Acorn apps
 
-Use this tool to create new Acorn apps or resources in existing ones.
+Use this tool to create new Acorn apps or scaffold resources (commands, events,
+listeners, providers) inside an existing one.
 
 ## Requirements
 
 - PHP 8.5 or higher
+
+## Quick start
+
+```bash
+# create a new app
+acorn-cli new my-app
+
+# scaffold resources inside it
+cd my-app
+acorn-cli make:command send-report --description="Send the daily report"
+acorn-cli make:event report-sent
+acorn-cli make:listener notify-admin --events=ReportSentEvent::class
+acorn-cli make:provider reporting
+```
+
+See the [commands reference](./docs/commands.md) for every command and option.
 
 ## [Commands](./docs/commands.md)
 
